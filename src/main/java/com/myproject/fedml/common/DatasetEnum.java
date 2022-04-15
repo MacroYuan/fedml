@@ -8,7 +8,7 @@ package com.myproject.fedml.common;
  **/
 public enum DatasetEnum {
     USER_DEFINED_DATASET(0, "用户自定义数据集", ""),
-    MNIST(1, "MNIST手写数字数据集", "$HOME/myProject/FedML/data/mnist");
+    MNIST(1, "mnist", "$HOME/myProject/FedML/data/mnist");
 
     private int code;
     private String datasetName;

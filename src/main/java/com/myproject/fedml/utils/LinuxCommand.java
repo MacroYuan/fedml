@@ -6,6 +6,7 @@ import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * LinuxCommands通过调起线程执行command命令，再将控制台输出作为输入结果返回
  * @author fengyu
  * @create 2021/8/11 20:57
  */

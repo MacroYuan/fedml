@@ -1,0 +1,13 @@
+{
+  "properties": [
+    {
+      "name": "model.save-path",
+      "type": "java.lang.String",
+      "description": "Description for model.save-path."
+    },
+    {
+      "name": "dataset.save-path",
+      "type": "java.lang.String",
+      "description": "Description for dataset.save-path."
+    }
+  ] }

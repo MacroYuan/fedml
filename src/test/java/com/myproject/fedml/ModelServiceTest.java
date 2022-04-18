@@ -4,8 +4,12 @@ import com.myproject.fedml.mbg.model.Model;
 import com.myproject.fedml.service.ModelService;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,8 +40,8 @@ public class ModelServiceTest {
     @Test
     public void testModelUpdate() {
         Model model = new Model();
-        Long modelId = 11L;
-        model.setModelDescription("this is a test");
+        Long modelId = 10L;
+        model.setModelPath("D:\\学习\\2022毕设");
         int result = modelService.updateModel(modelId, model);
         System.out.println(result);
     }
@@ -68,6 +72,22 @@ public class ModelServiceTest {
 
     @Test
     public void testModelUploadFile() {
+        File file = new File("C:\\Users\\MacroYuan\\Pictures\\背景.png");
+        Long modelId = 10L;
+
+        try {
+            FileInputStream fileInputStream = new FileInputStream(file);
+            MultipartFile multipartFile = new MockMultipartFile(file.getName(), file.getName(), null, fileInputStream);
+            MultipartFile uploadFile = multipartFile;
+            System.out.println("fileName:" + multipartFile.getName());
+            modelService.uploadModel(modelId, uploadFile);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testModelDownlodaFile() {
 
     }
 }

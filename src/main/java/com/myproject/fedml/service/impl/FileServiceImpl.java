@@ -33,15 +33,19 @@ public class FileServiceImpl implements FileService {
         if (file.getSize() > MAX_SIZE) {
             return null;
         }
+
+        // 文件新名字加个时间戳，确保不重复
         String suffixName = fileName.contains(".") ? fileName.substring(fileName.lastIndexOf(".")) : null;
-        String newName = System.currentTimeMillis() + suffixName;
+        String oldName = fileName.contains(".") ? fileName.substring(0, fileName.lastIndexOf(".")) : fileName;
+        String newName = oldName + "_" + System.currentTimeMillis() + suffixName;
         File newFile = new File(savePath, newName);
         if (!newFile.getParentFile().exists()) {
             newFile.getParentFile().mkdir();
         }
         try {
             file.transferTo(newFile);
-            result = savePath + "/"+ newName;
+            // windows的"/"改为"\"
+            result = savePath + "\\"+ newName;
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -49,8 +53,8 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public InputStream downloadFiles(String filename) {
-        File file = new File(savePath, filename);
+    public InputStream downloadFiles(String fileName) {
+        File file = new File(fileName);
         try {
             return new FileInputStream(file);
         } catch (FileNotFoundException e) {
@@ -59,7 +63,9 @@ public class FileServiceImpl implements FileService {
         return null;
     }
 
+    @Override
     public void setSavePath(String savePath) {
         this.savePath = savePath;
     }
+
 }

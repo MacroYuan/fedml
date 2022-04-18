@@ -4,6 +4,7 @@ import com.myproject.fedml.mbg.model.Dataset;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
+import java.util.List;
 
 /**
  * @author MacroYuan
@@ -14,6 +15,14 @@ import java.io.InputStream;
 public interface DatasetService {
 
     int createDataset(Dataset dataset);
+
+    int updateDataset(Long datasetId, Dataset dataset);
+
+    Dataset queryDataset(Long datasetId);
+
+    List<Dataset> queryDatasetList(int status);
+
+    int deleteDataset(Long datasetId);
 
     int uploadDataset(Long datasetId, MultipartFile datasetFile);
 

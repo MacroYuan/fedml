@@ -84,8 +84,14 @@ public class ModelServiceImpl implements ModelService {
     @Override
     public int uploadModel(Long modelId, MultipartFile modelFile) {
         int result = 0;
+
+        // 设置模型存储路径（绝对路径）
+        fileService.setSavePath("D:\\学习\\2022毕设");
+
         Model model = new Model();
-        model.setModelPath(fileService.uploadFiles(modelFile));
+        // fileService.uploadFiles() 返回文件绝对路径
+        String modelPath = fileService.uploadFiles(modelFile);
+        model.setModelPath(modelPath);
         // 更新模型表的模型路径
         result = updateModel(modelId, model);
         return result;

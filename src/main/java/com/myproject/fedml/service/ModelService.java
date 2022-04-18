@@ -14,12 +14,55 @@ import java.util.List;
  * @Version 1.0
  **/
 public interface ModelService {
+    /**
+     *
+     * @param model
+     * @return
+     */
     int createModel(Model model);
+
+    /**
+     *
+     * @param modelId
+     * @param model
+     * @return
+     */
     int updateModel(Long modelId, Model model);
+
+    /**
+     *
+     * @param modelId
+     * @return
+     */
     Model queryModel(Long modelId);
+
+    /**
+     *
+     * @param status
+     * @return
+     */
     List<Model> queryModelList(int status);
+
+    /**
+     *
+     * @param modelId
+     * @return
+     */
     int deleteModel(Long modelId);
+
+    /**
+     *
+     * @param modelId
+     * @param model
+     * @return
+     */
     int uploadModel(Long modelId, MultipartFile model);
+
+    /**
+     *
+     * @param modelId
+     * @return
+     */
     InputStream downloadModel(Long modelId);
 
 }

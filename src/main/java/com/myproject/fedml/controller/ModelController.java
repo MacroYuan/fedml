@@ -2,6 +2,7 @@ package com.myproject.fedml.controller;
 
 import com.myproject.fedml.common.utils.Result;
 import com.myproject.fedml.mbg.model.Model;
+import com.myproject.fedml.service.FileService;
 import com.myproject.fedml.service.ModelService;
 import net.sf.jsqlparser.expression.DateTimeLiteralExpression;
 import org.slf4j.Logger;
@@ -37,6 +38,9 @@ public class ModelController {
 
     @Autowired
     private ModelService modelService;
+
+    @Autowired
+    private FileService fileService;
 
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     public Result create(HttpServletRequest request) {
@@ -104,7 +108,9 @@ public class ModelController {
         try {
             Long modelId = Long.valueOf(request.getParameter("modelId"));
             Model model = modelService.queryModel(modelId);
-            String fileName = model.getModelName();
+            String modelPath = model.getModelPath();
+            // 后面改成Linux系统的
+            String fileName = modelPath.substring(modelPath.lastIndexOf("\\")+1);
 
             response.setHeader("Content-Disposition", "attachment;filename=" +  new String(fileName.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1));
             response.setContentType("application/force-download");

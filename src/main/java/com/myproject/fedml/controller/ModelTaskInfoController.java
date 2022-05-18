@@ -4,6 +4,7 @@ import com.myproject.fedml.common.DatasetEnum;
 import com.myproject.fedml.common.ModelEnum;
 import com.myproject.fedml.common.utils.Result;
 import com.myproject.fedml.mbg.mapper.UserMapper;
+import com.myproject.fedml.mbg.model.Task;
 import com.myproject.fedml.service.ModelTaskInfoService;
 import com.myproject.fedml.utils.LinuxCommand;
 import com.myproject.fedml.vo.ExecuteTaskParam;
@@ -17,6 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.slf4j.LoggerFactory.getLogger;
 
 
@@ -27,7 +31,7 @@ import static org.slf4j.LoggerFactory.getLogger;
  * @Version 1.0
  **/
 @RestController
-@RequestMapping("/modelTaskInfo/task")
+@RequestMapping("/task")
 public class ModelTaskInfoController {
     private static final Logger logger = getLogger(ModelTaskInfoController.class);
 
@@ -40,35 +44,14 @@ public class ModelTaskInfoController {
      */
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public Result createTask(@RequestBody ExecuteTaskParam executeTaskParam) {
-        try {
-            // 参数校验
-            System.out.println(executeTaskParam.toString());
-        } catch (Exception e) {
-            logger.error("");
-            return Result.error();
-        }
 
         try {
-            String command = "sh ../../../resources/static/shell/test.sh "
-                    + executeTaskParam.getGpu() + " "
-                    + executeTaskParam.getClientNum() + " "
-                    + executeTaskParam.getWorkNum() + " "
-                    + executeTaskParam.getBatchSize() + " "
-                    + DatasetEnum.getDatasetNameByCode(executeTaskParam.getDatasetCode()) + " "
-                    + DatasetEnum.getDatasetPathByCode(executeTaskParam.getDatasetCode()) + " "
-                    + ModelEnum.getModelNameByCode(executeTaskParam.getModelCode()) + " "
-                    + executeTaskParam.getPartitionMethod() + " "
-                    + executeTaskParam.getRound() + " "
-                    + executeTaskParam.getEpoch() + " "
-                    + executeTaskParam.getLr() + " "
-                    + executeTaskParam.getClientOptimizer() + " "
-                    + executeTaskParam.getCi();
+            Task newTask = executeTaskParam.toTaskCreate();
 
-            String result = LinuxCommand.run(command);
-            System.out.println(result);
+            modelTaskInfoService.createTask(newTask);
         } catch (Exception e) {
             logger.error("");
-            return Result.error();
+            return Result.error().put("msg", e.getMessage());
         }
         return Result.ok();
     }
@@ -81,9 +64,57 @@ public class ModelTaskInfoController {
     @RequestMapping(value = "/run", method = RequestMethod.GET)
     public Result run(HttpServletRequest request) {
         try {
-            int taskId = Integer.parseInt(request.getParameter("taskId"));
+            Long taskId = Long.valueOf(request.getParameter("taskId"));
+            Integer idx = Integer.valueOf(request.getParameter("idx"));
+            Integer workerNum = Integer.valueOf(request.getParameter("workNum"));
+            Integer usingGpu = Integer.valueOf(request.getParameter("usingGpu"));
+
+            modelTaskInfoService.executeTask(taskId, idx, workerNum, usingGpu);
         } catch (Exception e) {
-            return Result.error();
+            return Result.error().put("msg", e.getMessage());
+        }
+        return Result.ok();
+    }
+
+    @RequestMapping(value = "/status", method = RequestMethod.GET)
+    public Result queryStatus(HttpServletRequest request) {
+        Map<String, String> data = new HashMap<>();
+        try {
+            Long taskId = Long.valueOf(request.getParameter("taskId"));
+            int status = modelTaskInfoService.queryTaskStatus(taskId);
+            data.put("status", String.valueOf(status));
+        } catch (Exception e) {
+            return Result.error().put("msg", e.getMessage());
+        }
+        return Result.ok().put("data", data);
+    }
+
+    @RequestMapping(value = "/generate/gpuMapingFile", method = RequestMethod.POST)
+    public Result generateGpuMappingFile(@RequestBody Map<String, String> map) {
+        try {
+            modelTaskInfoService.generateGpuMappingFile(map);
+        } catch (Exception e) {
+            return Result.error().put("msg", e.getMessage());
+        }
+        return Result.ok();
+    }
+
+    @RequestMapping(value = "/generate/mpiHostFile", method = RequestMethod.POST)
+    public Result generateMpiHostFile(@RequestBody Map<String, String> map) {
+        try {
+            modelTaskInfoService.generateMpiHostFile(map);
+        } catch (Exception e) {
+            return Result.error().put("msg", e.getMessage());
+        }
+        return Result.ok();
+    }
+
+    @RequestMapping(value = "/generate/grpcIpConfigFile", method = RequestMethod.POST)
+    public Result generateGrpcIpConfigFile(@RequestBody Map<String, String> map) {
+        try {
+            modelTaskInfoService.generateGrpcIpConfigFile(map);
+        } catch (Exception e) {
+            return Result.error().put("msg", e.getMessage());
         }
         return Result.ok();
     }

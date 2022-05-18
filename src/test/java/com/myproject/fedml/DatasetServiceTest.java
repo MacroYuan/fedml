@@ -19,13 +19,13 @@ public class DatasetServiceTest {
     @Resource
     private DatasetService datasetService;
 
-    @Test
-    public void testDatasetInsert() {
-        Dataset dataset = new Dataset();
-        dataset.setDatasetId(11L);
-        dataset.setDatasetName("Test");
-        dataset.setDatasetPath("");
-        int result = datasetService.createDataset(dataset);
-        System.out.println(result);
-    }
+//    @Test
+//    public void testDatasetInsert() {
+//        Dataset dataset = new Dataset();
+//        dataset.setDatasetId(11L);
+//        dataset.setDatasetName("Test");
+//        dataset.setDatasetPath("");
+//        int result = datasetService.createDataset(dataset);
+//        System.out.println(result);
+//    }
 }

@@ -4,9 +4,11 @@ import com.myproject.fedml.common.utils.Result;
 import com.myproject.fedml.mbg.model.Model;
 import com.myproject.fedml.service.FileService;
 import com.myproject.fedml.service.ModelService;
+import com.myproject.fedml.vo.ModelParam;
 import net.sf.jsqlparser.expression.DateTimeLiteralExpression;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,25 +41,20 @@ public class ModelController {
     @Autowired
     private ModelService modelService;
 
-    @Autowired
-    private FileService fileService;
-
-    @RequestMapping(value = "/create", method = RequestMethod.GET)
-    public Result create(HttpServletRequest request) {
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    public Result create(@RequestBody ModelParam modelParam) {
         try {
-            Long modelId = Long.valueOf(request.getParameter("modelId"));
-            String modelName = request.getParameter("modelName");
-            String modelPath = request.getParameter("modelPath");
-
-            Model model = new Model();
-            model.setModelId(modelId);
-            model.setModelName(modelName);
-            model.setModelPath(modelPath);
+//            Long modelId = Long.valueOf(request.getParameter("modelId"));
+//            String modelName = request.getParameter("modelName");
+//            String modelPath = request.getParameter("modelPath");
+//
 
 
-            modelService.createModel(model);
+            Model newModel = modelParam.toModelCreate();
+
+            modelService.createModel(newModel);
         } catch (Exception e) {
-            return Result.error();
+            return Result.error().put("msg", e.getMessage());
         }
         return Result.ok();
     }
@@ -68,33 +65,53 @@ public class ModelController {
             Long modelId = Long.valueOf(request.getParameter("modelId"));
             modelService.uploadModel(modelId, file);
         } catch (Exception e) {
-            return Result.error();
+            return Result.error().put("msg", e.getMessage());
         }
         return Result.ok();
     }
 
-    @RequestMapping(value = "/update", method = RequestMethod.GET)
-    public Result update() {
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    public Result update(HttpServletRequest request, @RequestBody ModelParam modelParam) {
         try {
-
+            Long modelId = Long.valueOf(request.getParameter("modelId"));
+            modelService.updateModel(modelId, modelParam.toModelUpdate());
         } catch (Exception e) {
-            return Result.error();
+            return Result.error().put("msg", e.getMessage());
         }
         return Result.ok();
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.GET)
-    public Result delete() {
+    public Result delete(HttpServletRequest request) {
+        try {
+            Long modelId = Long.valueOf(request.getParameter("modelId"));
+            modelService.deleteModel(modelId);
+        } catch (Exception e) {
+            return Result.error().put("msg", e.getMessage());
+        }
         return Result.ok();
     }
 
     @RequestMapping(value = "/query", method = RequestMethod.GET)
-    public Result query() {
+    public Result query(HttpServletRequest request) {
+        try {
+            Long modelId = Long.valueOf(request.getParameter("modelId"));
+            modelService.queryModel(modelId);
+        } catch (Exception e) {
+            return Result.error().put("msg", e.getMessage());
+        }
         return Result.ok();
     }
 
     @RequestMapping(value = "/queryList", method = RequestMethod.GET)
-    public Result queryList() {
+    public Result queryList(HttpServletRequest request) {
+        try {
+            int status = 0;
+            status = Integer.parseInt(request.getParameter("status"));
+            modelService.queryModelList(status);
+        } catch (Exception e) {
+            return Result.error().put("msg", e.getMessage());
+        }
         return Result.ok();
     }
 
@@ -110,7 +127,7 @@ public class ModelController {
             Model model = modelService.queryModel(modelId);
             String modelPath = model.getModelPath();
             // 后面改成Linux系统的
-            String fileName = modelPath.substring(modelPath.lastIndexOf("\\")+1);
+            String fileName = modelPath.substring(modelPath.lastIndexOf("/")+1);
 
             response.setHeader("Content-Disposition", "attachment;filename=" +  new String(fileName.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1));
             response.setContentType("application/force-download");
@@ -125,7 +142,7 @@ public class ModelController {
             }
 
         } catch (Exception e) {
-
+            e.printStackTrace();
         } finally {
             try {
                 if (inputStream!=null){

@@ -20,11 +20,11 @@ class FedmlApplicationTests {
     @Resource
     private TaskMapper taskMapper;
 
-    @Test
-    public void testSelect() {
-        List<User> userList = userMapper.selectByExample(null);
-        userList.forEach(System.out::println);
-
-//        List<Task> taskList = taskMapper
-    }
+//    @Test
+//    public void testSelect() {
+//        List<User> userList = userMapper.selectByExample(null);
+//        userList.forEach(System.out::println);
+//
+////        List<Task> taskList = taskMapper
+//    }
 }

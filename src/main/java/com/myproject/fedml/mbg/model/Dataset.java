@@ -12,7 +12,7 @@ public class Dataset implements Serializable {
 
     private String datasetPath;
 
-    private String datasetDescriptiom;
+    private String datasetDescription;
 
     private Integer createTime;
 
@@ -48,12 +48,12 @@ public class Dataset implements Serializable {
         this.datasetPath = datasetPath;
     }
 
-    public String getDatasetDescriptiom() {
-        return datasetDescriptiom;
+    public String getDatasetDescription() {
+        return datasetDescription;
     }
 
-    public void setDatasetDescriptiom(String datasetDescriptiom) {
-        this.datasetDescriptiom = datasetDescriptiom;
+    public void setDatasetDescription(String datasetDescription) {
+        this.datasetDescription = datasetDescription;
     }
 
     public Integer getCreateTime() {
@@ -97,7 +97,7 @@ public class Dataset implements Serializable {
         sb.append(", datasetId=").append(datasetId);
         sb.append(", datasetName=").append(datasetName);
         sb.append(", datasetPath=").append(datasetPath);
-        sb.append(", datasetDescriptiom=").append(datasetDescriptiom);
+        sb.append(", datasetDescription=").append(datasetDescription);
         sb.append(", createTime=").append(createTime);
         sb.append(", updateTime=").append(updateTime);
         sb.append(", status=").append(status);

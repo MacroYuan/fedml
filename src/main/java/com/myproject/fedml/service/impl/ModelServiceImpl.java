@@ -86,7 +86,7 @@ public class ModelServiceImpl implements ModelService {
         int result = 0;
 
         // 设置模型存储路径（绝对路径）
-        fileService.setSavePath("D:\\学习\\2022毕设");
+        fileService.setSavePath("/python/data");
 
         Model model = new Model();
         // fileService.uploadFiles() 返回文件绝对路径

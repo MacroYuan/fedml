@@ -1,11 +1,8 @@
 package com.myproject.fedml.mbg.model;
 
-import com.baomidou.mybatisplus.annotation.TableId;
-
 import java.io.Serializable;
 
 public class User implements Serializable {
-    @TableId
     private Long id;
 
     private String name;

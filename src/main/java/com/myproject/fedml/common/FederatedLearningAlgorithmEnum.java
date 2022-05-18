@@ -2,11 +2,10 @@ package com.myproject.fedml.common;
 
 public enum FederatedLearningAlgorithmEnum {
 
-    USER_DEFINED_ALGORITHM(0, "用户自定义联邦算法"),
     FEDAVG(1, "fedavg"),
-    FEDNOVA(2, "fednova"),
-    FEDOPT(3, "fedopt"),
-    CLASSICAL_VERTICAL_FL(4, "classical vertical federated learning");
+    CLASSICAL_VERTICAL_FL(2, "vfl"),
+    FEDNOVA(3, "fednova"),
+    FEDOPT(4, "fedopt");
 
     private int code;
     private String federatedLearningAlgorithmName;
@@ -22,5 +21,15 @@ public enum FederatedLearningAlgorithmEnum {
 
     public String getFederatedLearningAlgorithmName() {
         return federatedLearningAlgorithmName;
+    }
+
+    public static String getFederatedNameByCode(int code) {
+        FederatedLearningAlgorithmEnum[] federatedLearningAlgorithmEnums = values();
+        for (FederatedLearningAlgorithmEnum federatedLearningAlgorithmEnum : federatedLearningAlgorithmEnums) {
+            if (federatedLearningAlgorithmEnum.getCode() == code) {
+                return federatedLearningAlgorithmEnum.getFederatedLearningAlgorithmName();
+            }
+        }
+        return null;
     }
 }

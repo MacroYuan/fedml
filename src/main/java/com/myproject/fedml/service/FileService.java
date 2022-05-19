@@ -24,4 +24,6 @@ public interface FileService {
      * @param savePath
      */
     void setSavePath(String savePath);
+
+    public String uploadFilesWithOriginName(MultipartFile file);
 }

@@ -45,7 +45,35 @@ public class FileServiceImpl implements FileService {
         try {
             file.transferTo(newFile);
             // windows的"/"改为"\"
-            result = savePath + "\\"+ newName;
+            result = savePath + File.pathSeparator + newName;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @Override
+    public String uploadFilesWithOriginName(MultipartFile file) {
+        String result = null;
+        final long MAX_SIZE = 2097152L;
+
+        String fileName = file.getOriginalFilename();
+        if (StringUtils.isEmpty(fileName)) {
+            return null;
+        }
+        if (file.getSize() > MAX_SIZE) {
+            return null;
+        }
+
+
+        File newFile = new File(savePath, fileName);
+        if (!newFile.getParentFile().exists()) {
+            newFile.getParentFile().mkdir();
+        }
+        try {
+            file.transferTo(newFile);
+            // windows的"/"改为"\"
+            result = savePath + File.pathSeparator + fileName;
         } catch (IOException e) {
             e.printStackTrace();
         }

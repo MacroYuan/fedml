@@ -86,11 +86,12 @@ public class ModelServiceImpl implements ModelService {
         int result = 0;
 
         // 设置模型存储路径（绝对路径）
-        fileService.setSavePath("/python/data");
+        fileService.setSavePath("python/data");
 
+        // 模型文件名需要是model.py，里面包含只有一个类，即MyModel的网络定义
         Model model = new Model();
         // fileService.uploadFiles() 返回文件绝对路径
-        String modelPath = fileService.uploadFiles(modelFile);
+        String modelPath = fileService.uploadFilesWithOriginName(modelFile);
         model.setModelPath(modelPath);
         // 更新模型表的模型路径
         result = updateModel(modelId, model);

@@ -63,18 +63,20 @@ public class ModelTaskInfoController {
      */
     @RequestMapping(value = "/run", method = RequestMethod.GET)
     public Result run(HttpServletRequest request) {
+        Map<String, String> data = new HashMap<>();
         try {
             Long taskId = Long.valueOf(request.getParameter("taskId"));
             Integer idx = Integer.valueOf(request.getParameter("idx"));
             Integer workerNum = Integer.valueOf(request.getParameter("workerNum"));
             Integer usingGpu = Integer.valueOf(request.getParameter("usingGpu"));
 
-            modelTaskInfoService.executeTask(taskId, idx, workerNum, usingGpu);
+           String result = modelTaskInfoService.executeTask(taskId, idx, workerNum, usingGpu);
+           data.put("result", result);
         } catch (Exception e) {
             e.printStackTrace();
             return Result.error().put("msg", e.getMessage());
         }
-        return Result.ok();
+        return Result.ok().put("data", data);
     }
 
     @RequestMapping(value = "/status", method = RequestMethod.GET)

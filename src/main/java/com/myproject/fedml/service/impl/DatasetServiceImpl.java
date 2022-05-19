@@ -64,11 +64,12 @@ public class DatasetServiceImpl implements DatasetService {
     public int uploadDataset(Long datasetId, MultipartFile datasetFile) {
         int result = 0;
         // 上传文件需重命名为train_target.csv、train_feature.csv、test_feature.csv、test_target.csv
-        String datasetPath = "python/data";
-        fileService.setSavePath(datasetPath);
+//        String datasetPath = "python/data";
+//        fileService.setSavePath(datasetPath);
+
         Dataset dataset = new Dataset();
 
-        fileService.uploadFiles(datasetFile);
+        String datasetPath = fileService.uploadFiles(datasetFile);
         // 存储格式：路径+文件名，eg. /data/dataset/test.csv
         dataset.setDatasetPath(datasetPath + File.separator + datasetFile.getName());
 

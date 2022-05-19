@@ -218,7 +218,7 @@ public class ModelTaskInfoServiceImpl implements ModelTaskInfoService {
     private void buildConfig(String filePath, Task task, int workNum, int usingGpu) throws IOException {
         String fileName = "fedml_config.yaml";
 
-        String src = filePath + File.pathSeparator + fileName;
+        String src = filePath + File.separator + fileName;
 
         Yaml yaml = new Yaml();
         FileWriter fileWriter = null;

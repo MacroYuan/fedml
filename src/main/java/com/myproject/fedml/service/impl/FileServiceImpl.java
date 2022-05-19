@@ -45,7 +45,7 @@ public class FileServiceImpl implements FileService {
         try {
             file.transferTo(newFile);
             // windows的"/"改为"\"
-            result = savePath + File.pathSeparator + newName;
+            result = savePath + File.separator + newName;
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -73,7 +73,7 @@ public class FileServiceImpl implements FileService {
         try {
             file.transferTo(newFile);
             // windows的"/"改为"\"
-            result = savePath + File.pathSeparator + fileName;
+            result = savePath + File.separator + fileName;
         } catch (IOException e) {
             e.printStackTrace();
         }

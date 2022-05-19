@@ -70,7 +70,7 @@ public class DatasetServiceImpl implements DatasetService {
 
         fileService.uploadFiles(datasetFile);
         // 存储格式：路径+文件名，eg. /data/dataset/test.csv
-        dataset.setDatasetPath(datasetPath + File.pathSeparator + datasetFile.getName());
+        dataset.setDatasetPath(datasetPath + File.separator + datasetFile.getName());
 
         result = updateDataset(datasetId, dataset);
 

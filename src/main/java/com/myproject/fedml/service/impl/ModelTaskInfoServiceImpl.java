@@ -125,10 +125,12 @@ public class ModelTaskInfoServiceImpl implements ModelTaskInfoService {
         String command = null;
         // TODO:
         if (idx == 1) {
-            command = "python /python/examples/simulation/sp_fedavg_mnist_lr_example/torch_fedavg_mnist_lr_custum_data_and_model_example.py " + "--cf fedml_config.yaml";
+//            command = "python /python/examples/simulation/sp_fedavg_mnist_lr_example/torch_fedavg_mnist_lr_custum_data_and_model_example.py " + "--cf fedml_config.yaml";
+            command = "bash /python/examples/simulation/sp_fedavg_mnist_lr_example/run.sh";
         } else {
-            command = "python /python/examples/simulation/sp_fedavg_mnist_lr_example/torch_fedavg_mnist_lr_custum_data_and_model_example.py " + "--cf fedml_config.yaml";
+//            command = "python /python/examples/simulation/sp_fedavg_mnist_lr_example/torch_fedavg_mnist_lr_custum_data_and_model_example.py " + "--cf fedml_config.yaml";
 //            command = "bash run_client.sh " + idx;
+            command = "bash /python/examples/simulation/sp_fedavg_mnist_lr_example/run.sh";
         }
         result = LinuxCommand.run(command);
         // TODO：执行完更新状态
@@ -207,7 +209,7 @@ public class ModelTaskInfoServiceImpl implements ModelTaskInfoService {
     public int generateGpuMappingFile(Map<String, String> map) throws IOException {
         int result = 0;
 
-        String filePath = "/fedml/python/examples/config";
+        String filePath = taskFilePath;
         File newFile = DistributeFile.generateGpuMappingFile(filePath, map);
 
         return result;

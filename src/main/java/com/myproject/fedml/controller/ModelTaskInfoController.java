@@ -66,11 +66,12 @@ public class ModelTaskInfoController {
         try {
             Long taskId = Long.valueOf(request.getParameter("taskId"));
             Integer idx = Integer.valueOf(request.getParameter("idx"));
-            Integer workerNum = Integer.valueOf(request.getParameter("workNum"));
+            Integer workerNum = Integer.valueOf(request.getParameter("workerNum"));
             Integer usingGpu = Integer.valueOf(request.getParameter("usingGpu"));
 
             modelTaskInfoService.executeTask(taskId, idx, workerNum, usingGpu);
         } catch (Exception e) {
+            e.printStackTrace();
             return Result.error().put("msg", e.getMessage());
         }
         return Result.ok();
@@ -114,6 +115,7 @@ public class ModelTaskInfoController {
         try {
             modelTaskInfoService.generateGrpcIpConfigFile(map);
         } catch (Exception e) {
+            e.printStackTrace();
             return Result.error().put("msg", e.getMessage());
         }
         return Result.ok();
